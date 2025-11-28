@@ -26,7 +26,7 @@ const Login = () => {
       login(res.token);
       setMsg("Login successful! Redirecting...");
       setTimeout(() => {
-        navigate("/");
+        navigate("/dashboard");
       }, 1500);
       // navigate("/")
     } catch (err) {
