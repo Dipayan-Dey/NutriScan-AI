@@ -1,0 +1,17 @@
+fastapi
+uvicorn[standard]
+
+motor
+pymongo
+
+python-jose[cryptography]
+passlib[bcrypt]
+
+pydantic
+pydantic-settings
+argon2_cffi
+groq
+python-dotenv
+email-validator
+
+requests

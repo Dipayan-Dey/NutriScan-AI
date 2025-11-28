@@ -1,0 +1,54 @@
+
+
+
+services:
+
+  mongo:
+    image: mongo:6.0
+    container_name: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - nutrinet
+
+  backend:
+    build:
+      context: ./Backend
+      dockerfile: Dockerfile
+    container_name: backend
+    restart: always
+    depends_on:
+      - mongo
+    ports:
+      - "8000:8000"
+    environment:
+      MONGO_URI: "mongodb+srv://Dipayan:2006@cluster0.haylipa.mongodb.net/?appName=Cluster0"
+      DB_NAME: "Diet_Analyzer"
+      MODEL_NAME: "llama-3.3-70b-versatile"
+      JWT_SECRET: "my_super_secret_keyhdigjvbdsgjbdsvbdhcjdsgvjdasbd"
+      GROQ_API_KEY: "***REMOVED***"
+    networks:
+      - nutrinet
+
+  frontend:
+    build:
+      context: ./Frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "5173:5173"
+    networks:
+      - nutrinet
+
+volumes:
+  mongo_data:
+
+networks:
+  nutrinet:
+    driver: bridge
