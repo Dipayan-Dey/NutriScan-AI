@@ -1,31 +1,38 @@
 import { useState } from "react";
 import { User, Mail, Lock, Activity, AlertCircle, Eye, EyeOff, CheckCircle, ArrowRight } from "lucide-react";
 import logo from "../../assets/logo.png";
+import { signupUser } from "../../api/Authapi";
+import { useNavigate } from "react-router-dom";
+
 const Signup = () => {
   const [form, setForm] = useState({ username: "", email: "", password: "" });
   const [msg, setMsg] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-
+   const navigate = useNavigate();
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async () => {
+const handleSubmit = async () => {
+  try {
     setLoading(true);
     setMsg("");
 
-    // Simulate API call
+    const res = await signupUser(form);
+    setMsg("Account created successfully!");
     setTimeout(() => {
-      setMsg("Account created successfully! Redirecting to login...");
-      setLoading(false);
-      
-      // Redirect after 2 seconds
-      setTimeout(() => {
-        window.location.href = "/login";
-      }, 2000);
-    }, 1500);
-  };
+      navigate("/login");
+      // window.location.href = "/login";
+    }, 2000);
+
+  } catch (err) {
+    setMsg(err.response?.data?.message || "Signup failed");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   // Password strength indicator
   const getPasswordStrength = (password) => {

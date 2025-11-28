@@ -24,8 +24,11 @@ const Login = () => {
     try {
       const res = await loginUser(form);
       login(res.token);
-      navigate("/")
       setMsg("Login successful! Redirecting...");
+      setTimeout(() => {
+        navigate("/");
+      }, 1500);
+      // navigate("/")
     } catch (err) {
       setMsg(err.response?.data?.detail || "Login failed. Please try again.");
     } finally {
