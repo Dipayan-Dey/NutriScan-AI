@@ -244,17 +244,17 @@ export default function Dashboard() {
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50">
       {/* Terms & Conditions Modal */}
       {showTermsModal && !termsAccepted && (
-        <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-3xl shadow-2xl max-w-3xl w-full max-h-[95vh] overflow-hidden animate-fade-in">
+        <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4 ">
+          <div className="bg-white rounded-3xl shadow-2xl max-w-3xl w-full max-h-[90vh] flex flex-col animate-fade-in">
             {/* Modal Header */}
-            <div className="bg-gradient-to-r from-emerald-500 to-teal-600 p-8 text-white">
+            <div className="bg-gradient-to-r from-emerald-500 to-teal-600 p-6 md:p-8 text-white flex-shrink-0 rounded-t-3xl">
               <div className="flex items-center space-x-3 mb-2">
                 <div className="bg-white bg-opacity-20 p-2 rounded-xl">
                   {/* <Activity className="w-8 h-8" /> */}
                   <img src={logo} alt="" className="w-16" />
                 </div>
                 <div>
-                  <h2 className="text-3xl font-bold">
+                  <h2 className="text-xl md:text-3xl  font-bold">
                     Welcome to NutriSense AI
                   </h2>
 
@@ -422,12 +422,9 @@ export default function Dashboard() {
                     as professional medical advice.
                   </p>
                 </div>
+                
               </div>
-            </div>
-
-            {/* Modal Footer */}
-            <div className="border-t border-gray-200 p-6 bg-gray-50">
-              <div className="flex items-start space-x-3 mb-4">
+               <div className="flex items-start space-x-3 mb-4 bg-gray-100 p-4 rounded-lg mt-6">
                 <input
                   type="checkbox"
                   id="terms-checkbox"
@@ -444,10 +441,15 @@ export default function Dashboard() {
                   and is not a substitute for professional medical advice.
                 </label>
               </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="border-t border-gray-200 p-6 bg-gray-50 rounded-b-3xl">
+             
               <button
                 onClick={handleAcceptTerms}
                 disabled={!termsCheckbox}
-                className="w-full py-4 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-semibold rounded-xl hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none"
+                className="w-full py-4 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-semibold rounded-xl hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none text-[12px] md:text-[16px]"
               >
                 Accept & Continue to Dashboard
               </button>
