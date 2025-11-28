@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { User, Mail, Lock, Activity, AlertCircle, Eye, EyeOff, CheckCircle, ArrowRight } from "lucide-react";
-
+import logo from "../../assets/logo.png";
 const Signup = () => {
   const [form, setForm] = useState({ username: "", email: "", password: "" });
   const [msg, setMsg] = useState("");
@@ -62,7 +62,8 @@ const Signup = () => {
         <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
              <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-emerald-600 to-teal-600 rounded-2xl mb-4 shadow-lg transform hover:scale-110 transition-transform">
-            <Activity className="text-white" size={32} />
+            {/* <Activity className="text-white" size={32} /> */}
+            <img src={logo} alt="" />
           </div>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Create Your Account</h1>
           <p className="text-gray-600">Start your journey to better health today</p>
