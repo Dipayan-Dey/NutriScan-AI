@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Activity,
   TrendingUp,
@@ -239,6 +239,13 @@ export default function Dashboard() {
     sessionStorage.setItem("termsAccepted", "true");
     loadDashboardData();
   };
+
+    const messagesEndRef = useRef(null);
+
+  // Auto-scroll whenever chatHistory or loading changes
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [chatHistory, chatLoading]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50">
@@ -694,96 +701,100 @@ export default function Dashboard() {
             {/* Chat Tab */}
             {activeTab === "chat" && (
               <div className="bg-white rounded-2xl shadow-md border border-emerald-100 h-[600px] flex flex-col">
-                <div className="p-6 border-b border-gray-100">
-                  <h2 className="text-2xl font-bold text-gray-800">
-                    AI Nutrition Assistant
-                  </h2>
-                  <p className="text-gray-500 mt-1">
-                    Ask me anything about nutrition, meal planning, and healthy
-                    eating
-                  </p>
-                </div>
+      {/* Header */}
+      <div className="p-6 border-b border-gray-100">
+        <h2 className="text-2xl font-bold text-gray-800">AI Nutrition Assistant</h2>
+        <p className="text-gray-500 mt-1">
+          Ask me anything about nutrition, meal planning, and healthy eating
+        </p>
+      </div>
 
-                <div className="flex-1 overflow-y-auto p-6 space-y-4">
-                  {chatHistory.length === 0 ? (
-                    <div className="h-full flex items-center justify-center text-center">
-                      <div className="max-w-md">
-                        <div className="animate-pulse">
-                          <MessageSquare className="w-16 h-16 text-emerald-500 mx-auto mb-4" />
-                        </div>
-                        <p className="text-gray-500 text-lg mb-4">
-                          Initializing AI Assistant...
-                        </p>
-                      </div>
-                    </div>
-                  ) : (
-                    chatHistory.map((msg, idx) => (
-                      <div
-                        key={idx}
-                        className={`flex ${
-                          msg.role === "user" ? "justify-end" : "justify-start"
-                        }`}
-                      >
-                        <div
-                          className={`max-w-[80%] px-6 py-4 rounded-2xl ${
-                            msg.role === "user"
-                              ? "bg-gradient-to-r from-emerald-500 to-teal-600 text-white"
-                              : "bg-gray-100 text-gray-800"
-                          }`}
-                        >
-                          <p className="leading-relaxed whitespace-pre-wrap">
-                            {msg.content}
-                          </p>
-                        </div>
-                      </div>
-                    ))
-                  )}
-
-                  {chatLoading && (
-                    <div className="flex justify-start">
-                      <div className="bg-gray-100 px-6 py-4 rounded-2xl">
-                        <div className="flex space-x-2">
-                          <div
-                            className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
-                            style={{ animationDelay: "0ms" }}
-                          />
-                          <div
-                            className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
-                            style={{ animationDelay: "150ms" }}
-                          />
-                          <div
-                            className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
-                            style={{ animationDelay: "300ms" }}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                <div className="p-6 border-t border-gray-100">
-                  <div className="flex space-x-3">
-                    <input
-                      type="text"
-                      value={chatText}
-                      onChange={(e) => setChatText(e.target.value)}
-                      onKeyPress={(e) =>
-                        e.key === "Enter" && !chatLoading && handleChat()
-                      }
-                      placeholder="Type your question..."
-                      disabled={chatLoading}
-                      className="flex-1 px-6 py-4 rounded-xl border border-gray-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all outline-none disabled:opacity-50"
-                    />
-                    <button
-                      onClick={handleChat}
-                      disabled={chatLoading || !chatText.trim()}
-                      className="px-8 py-4 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      <Send className="w-5 h-5" />
-                    </button>
-                  </div>
-                </div>
+      {/* Chat Body */}
+      <div className="flex-1 overflow-y-auto p-6 space-y-4">
+        {chatHistory.length === 0 ? (
+          <div className="h-full flex items-center justify-center text-center">
+            <div className="max-w-md">
+              <div className="animate-pulse">
+                <MessageSquare className="w-16 h-16 text-emerald-500 mx-auto mb-4" />
               </div>
+              <p className="text-gray-500 text-lg mb-4">
+                Initializing AI Assistant...
+              </p>
+            </div>
+          </div>
+        ) : (
+          chatHistory.map((msg, idx) => (
+            <div
+              key={idx}
+              className={`flex ${
+                msg.role === "user" ? "justify-end" : "justify-start"
+              }`}
+            >
+              <div
+                className={`max-w-[80%] px-6 py-4 rounded-2xl ${
+                  msg.role === "user"
+                    ? "bg-gradient-to-r from-emerald-500 to-teal-600 text-white"
+                    : "bg-gray-100 text-gray-800"
+                }`}
+              >
+                <p className="leading-relaxed whitespace-pre-wrap">
+                  {msg.content}
+                </p>
+              </div>
+            </div>
+          ))
+        )}
+
+        {/* Typing indicator */}
+        {chatLoading && (
+          <div className="flex justify-start">
+            <div className="bg-gray-100 px-6 py-4 rounded-2xl">
+              <div className="flex space-x-2">
+                <div
+                  className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                  style={{ animationDelay: "0ms" }}
+                />
+                <div
+                  className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                  style={{ animationDelay: "150ms" }}
+                />
+                <div
+                  className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                  style={{ animationDelay: "300ms" }}
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Auto-scroll target */}
+        <div ref={messagesEndRef} />
+      </div>
+
+      {/* Footer Input */}
+      <div className="p-6 border-t border-gray-100">
+        <div className="flex space-x-3">
+          <input
+            type="text"
+            value={chatText}
+            onChange={(e) => setChatText(e.target.value)}
+            onKeyPress={(e) =>
+              e.key === "Enter" && !chatLoading && handleChat()
+            }
+            placeholder="Type your question..."
+            disabled={chatLoading}
+            className="flex-1 px-6 py-4 rounded-xl border border-gray-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all outline-none disabled:opacity-50"
+          />
+          <button
+            onClick={handleChat}
+            disabled={chatLoading || !chatText.trim()}
+            className="px-8 py-4 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <Send className="w-5 h-5" />
+          </button>
+        </div>
+      </div>
+    </div>
             )}
 
             {/* History Tab */}

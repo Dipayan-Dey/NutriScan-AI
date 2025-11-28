@@ -8,39 +8,28 @@ import Navbar from "./components/Navber";
 import { useAuth } from "./context/AuthContext";
 import LandingPage from "./components/pages/LandingPage";
 import Footer from "./components/Footer";
-
 function App() {
   const { authenticated } = useAuth();
   const location = useLocation();
-  
-  // Hide navbar on login and signup pages
-  const hideNavFoot = location.pathname === "/login" || location.pathname === "/signup";
+
+  // Navbar should hide ONLY on login & signup
+  const hideNav = location.pathname === "/login" || location.pathname === "/signup";
+
+  // Footer should hide on login, signup, AND dashboard
+  const hideFooter = hideNav || location.pathname === "/dashboard";
 
   return (
     <>
-      {!hideNavFoot && <Navbar />}
+      {!hideNav && <Navbar />}
       <Toaster position="top-right" />
 
       <Routes>
-        {/* Landing page - redirect to dashboard if authenticated */}
-        <Route 
-          path="/" 
-          element={ <LandingPage />} 
-        />
+        <Route path="/" element={<LandingPage />} />
 
-        {/* Login - redirect to dashboard if already authenticated */}
-        <Route 
-          path="/login" 
-          element={ <Login />} 
-        />
-        
-        {/* Signup - redirect to dashboard if already authenticated */}
-        <Route 
-          path="/signup" 
-          element={ <Signup />} 
-        />
+        <Route path="/login" element={<Login />} />
 
-        {/* Protected Dashboard route */}
+        <Route path="/signup" element={<Signup />} />
+
         <Route
           path="/dashboard"
           element={
@@ -50,9 +39,11 @@ function App() {
           }
         />
       </Routes>
-      {!hideNavFoot&& <Footer/>}
+
+      {!hideFooter && <Footer />}
     </>
   );
 }
+
 
 export default App;
