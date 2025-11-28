@@ -25,11 +25,11 @@ services:
     ports:
       - "8000:8000"
     environment:
-      MONGO_URI: "mongodb+srv://Dipayan:2006@cluster0.haylipa.mongodb.net/?appName=Cluster0"
-      DB_NAME: "Diet_Analyzer"
-      MODEL_NAME: "llama-3.3-70b-versatile"
-      JWT_SECRET: "my_super_secret_keyhdigjvbdsgjbdsvbdhcjdsgvjdasbd"
-      GROQ_API_KEY: "***REMOVED***"
+      MONGO_URI: "DB_URI_HERE"
+      DB_NAME: "DB_NAME_HERE"
+      MODEL_NAME: "MODEL_NAME_HERE"
+      JWT_SECRET: "JWT_SECRET_KEY_HERE"
+      GROQ_API_KEY: "YOUR_GROQ_API_KEY_HERE"
     networks:
       - nutrinet
 
