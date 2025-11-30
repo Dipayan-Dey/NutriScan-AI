@@ -6,6 +6,7 @@ from app.core.security import hash_password, verify_password
 from app.utils.jwt_handler import create_token ,decode_token
 
 router = APIRouter(prefix="/api/v1/auth", tags=["Auth"])
+
 def get_current_user(authorization: str = Header(None)):
     if authorization is None:
         raise HTTPException(401, "Authorization header missing")
@@ -28,7 +29,12 @@ async def signup(payload: UserSignup):
     }
 
     res = await db.users.insert_one(user_doc)
-    return {"msg": "Signup successful", "user_id": str(res.inserted_id)}
+    return {
+        "msg": "Signup successful", 
+       "user_id": str(res.inserted_id),
+        "username": payload.username,
+        "email": payload.email
+        }
 
 
 @router.post("/login")
